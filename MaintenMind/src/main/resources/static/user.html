@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>责任方</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h1>任务</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>任务内容</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>产品名</th>
+            <th>仓库名</th>
+            <th>需要处理货物数量</th>
+            <th>任务类型</th>
+            <th>目标仓库（当任务类型为转移时的目标仓库）</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(taskUser, index) in taskUsers" :key="index">
+            <td>{{ taskUser.content }}</td>
+            <td>{{ taskUser.createtime }}</td>
+            <td>{{ taskUser.deadline }}</td>
+            <td>{{ taskUser.productname }}</td>
+            <td>{{ taskUser.warehousename }}</td>
+            <td>{{ taskUser.quantity }}</td>
+            <td>{{ taskUser.targetWarehouseid }}</td>
+            <td>{{ taskUser.tasktype }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                taskUsers:[]
+            }
+        },
+        mounted() {
+            this.selectAll()
+        },
+        methods: {
+            //查询任务
+            selectAll(){
+                axios.get("http://localhost:8080/tasks")
+                    .then(resp => {
+                        this.taskUsers = resp.data
+                    })
+            }
+        }
+    })
+</script>
+</body>
+</html>

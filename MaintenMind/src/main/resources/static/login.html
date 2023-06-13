@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<div id="app">
+    <form @submit.prevent="login">
+        用户名：<input type="text" v-model="user.username"><br/>
+        密码：<input type="password" v-model="user.password"><br/>
+        <button type="submit">登录</button>
+    </form>
+</div>
+
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            user: {
+                username: '',
+                password: ''
+            }
+        },
+        methods: {
+            login() {
+                axios.post('http://localhost:8080/users/login', this.user)
+                    .then(response => {
+                        if (response.data.success) {
+                            // 处理登录成功后的逻辑
+                            window.location.href = response.data.redirectUrl;
+                        } else {
+                            // 处理登录失败的逻辑
+                            alert('用户名或密码错误，请重新输入');
+                        }
+                    })
+                    .catch(error => {
+                        console.log('请求出错了，错误信息是：', error);
+                        alert('请求出错了，请稍后再试');
+                    });
+            }
+        }
+    })
+</script>
+</body>
+</html>

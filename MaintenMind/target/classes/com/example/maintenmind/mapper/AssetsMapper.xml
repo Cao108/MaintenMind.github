@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.maintenmind.mapper.AssetsMapper">
+
+    <resultMap id="AssetsResultMap" type="com.example.maintenmind.pojo.Assets">
+        <result property="productName" column="product_name"/>
+        <result property="warehouseName" column="warehouse_name"/>
+    </resultMap>
+    <select id="selectNumber" resultType="java.lang.Integer">
+        SELECT s.quantity
+        FROM product p
+                 INNER JOIN stock s ON p.id = s.product_id
+                 INNER JOIN warehouse w ON w.id = s.warehouse_id
+        where p.name = #{productName}
+          and w.name = #{warehouseName}
+    </select>
+    <select id="selectAll" resultMap="AssetsResultMap">
+        SELECT p.name AS product_name, w.name AS warehouse_name, s.quantity
+        FROM product p
+                 INNER JOIN stock s ON p.id = s.product_id
+                 INNER JOIN warehouse w ON w.id = s.warehouse_id;
+    </select>
+</mapper>

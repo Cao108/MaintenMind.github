@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.maintenmind.mapper.TaskMapper">
+
+    <resultMap id="TaskResultMap" type="com.example.maintenmind.pojo.Task">
+        <result property="userid" column="assignee_id"/>
+        <result property="adminid" column="manager_id"/>
+        <result property="productid" column="product_id"/>
+        <result property="warehouseid" column="warehouse_id"/>
+        <result property="targetWarehouseid" column="targetWarehouse_id"/>
+    </resultMap>
+
+    <insert id="insertTask">
+        INSERT INTO task (content, createtime, deadline, assignee_id, manager_id, product_id, warehouse_id, quantity,
+                          tasktype, targetWarehouse_id)
+        VALUES (#{content}, #{createtime}, #{deadline}, #{userid}, #{adminid}, #{productid}, #{warehouseid},
+                #{quantity},
+                #{targetWarehouseid}, #{tasktype});
+    </insert>
+
+
+    <select id="selectProductName" resultType="java.lang.Integer">
+        select id
+        from product
+        where name = #{productname}
+    </select>
+    <select id="selectWarehouseName" resultType="java.lang.Integer">
+        select id
+        from warehouse
+        where name = #{warehousename}
+    </select>
+    <select id="selectById" resultMap="TaskResultMap">
+        SELECT content, createtime, deadline, assignee_id, manager_id, product_id, warehouse_id, quantity, tasktype, targetWarehouse_id
+        FROM task
+        WHERE assignee_id = #{userid}
+    </select>
+    <select id="selectProductId" resultType="java.lang.String">
+        select name from product where id=#{id}
+    </select>
+    <select id="selectWarehouseId" resultType="java.lang.String">
+        select name from warehouse where id=#{id}
+    </select>
+</mapper>
